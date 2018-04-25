@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zjuintl;
+
+service ZJUintl {
+    rpc getCourse(User) returns (Courses) {}
+}
+
+message User {
+    string username = 1;
+    string password = 2;
+}
+
+message Courses {
+    int32 status = 1;
+    repeated Course course = 2;
+}
+
+message Course {
+    string id = 1;
+    string name = 2;
+    string time = 3;
+    string type = 4;
+    string room = 5;
+    string instructor = 6;
+    string week = 7;
+}
