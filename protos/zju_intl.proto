@@ -4,6 +4,15 @@ package zjuintl;
 
 service ZJUintl {
     rpc getCourse(User) returns (Courses) {}
+    rpc connect_test(Infosent) returns (Infoback) {}
+}
+
+message Infosent {
+    string name = 1;
+}
+
+message Infoback {
+    string message = 1;
 }
 
 message User {
@@ -24,4 +33,7 @@ message Course {
     string room = 5;
     string instructor = 6;
     string week = 7;
+    string month = 8;
+    string date = 9;
+    int32 weeknum = 10;
 }

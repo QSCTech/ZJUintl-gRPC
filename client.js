@@ -1,8 +1,8 @@
 /*
- * @Author: Laphets 
- * @Date: 2018-04-25 00:20:17 
+ * @Author: Laphets
+ * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-25 00:23:05
+ * @Last Modified time: 2018-04-26 16:59:26
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -15,12 +15,21 @@ let client = new zjuintl.ZJUintl(require('./config').port, grpc.credentials.crea
 
 const user = require('./config').test_user;
 
-// console.log(user);
 
-client.getCourse(user, (err, response) => {
+//Code for connect test
+// client.connect_test({name: 'lapehts'}, (err, response) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log(response);
+//     }
+// });
+
+//Code for get course(time table)
+client.getCourse({ username: '3170111704', password: 'asdfghjkl' }, (err, response) => {
     if (err) {
         console.log(err);
     } else {
         console.log(response);
     }
-});
+})

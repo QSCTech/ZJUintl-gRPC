@@ -2,7 +2,7 @@
  * @Author: Laphets 
  * @Date: 2018-04-25 00:08:10 
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-25 21:35:22
+ * @Last Modified time: 2018-04-26 16:49:11
  */
 
 const unirest = require("unirest");
@@ -63,7 +63,7 @@ const get_schedule_tabel = (cookie) => {
         req.end(function (res) {
             if (res.error)
                 reject(res.error);
-
+            // console.log(res.body);
             let $ = cheerio.load(res.body)
             let course = [];
             // console.log($('#WEEKLY_SCHED_HTMLAREA').html());
@@ -390,7 +390,9 @@ const main = async (user) => {
             "timezoneOffset": "0"
         }
         let cookie = await get_cookie_pp(data_pp);
+        // console.log(cookie);
         let course = await get_schedule_tabel(cookie);
+        // console.log(course);
         let info = prase_info(course);
         await step_1(cookie);
         let url = await step_2(cookie);
@@ -400,7 +402,7 @@ const main = async (user) => {
             ICSID
         } = await step_3(cookie, url);
         let courses = await step_4(cookie, ICElementNum, ICStateNum, ICSID, info);
-        console.log(courses);
+        return courses;
     } catch (error) {
         console.log(error);
     }
@@ -408,4 +410,4 @@ const main = async (user) => {
 
 module.exports = main;
 
-main({username: '3170111705', password: 'asdfghjkl'});
+// main({username: '3170111705', password: 'asdfghjkl'});
