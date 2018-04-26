@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 19:51:32
+ * @Last Modified time: 2018-04-26 20:41:18
  */
 
 const unirest = require("unirest");
@@ -14,7 +14,7 @@ const cheerio = require("cheerio");
  */
 const get_cookie_pp = (data) => {
     return new Promise((resolve, reject) => {
-        var req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
+        const req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
         req.headers({
             "Postman-Token": "b5f9d7dd-ef66-9a31-9199-9350cbf2c05a",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
@@ -34,11 +34,13 @@ const get_cookie_pp = (data) => {
         req.end(function (res) {
             if (res.error) 
                 reject(res.error);
+            
+            // console.log(res.body);
             let cookie = res.headers["set-cookie"];
             // console.log(cookie);
             resolve(cookie);
         });
-    })
+    });
 }
 
 /**
@@ -67,20 +69,27 @@ const get_schedule_tabel = (cookie) => {
                     "q=0.8"
         });
         req.end(function (res) {
+
             if (res.error) 
                 reject(res.error);
             try {
-                // console.log(res.body);
-                let $ = cheerio.load(res.body)
+
+                let $ = cheerio.load(res.body);
+                if ($('#win0divPAGECONTAINER').text() == 'You are not authorized for this page.') {
+                    //Wrong username or password
+                    throw('USERWRONG');
+                }
                 let course = [];
                 // console.log($('#WEEKLY_SCHED_HTMLAREA').html());
                 let Entities = require('html-entities').XmlEntities;
                 entities = new Entities();
+
                 $('.SSSTEXTWEEKLY').each(function (i, elem) {
                     let result = $(elem)
                         .html()
                         .split('<br>');
-                    //console.log(result);
+
+                    // console.log(111); console.log(result);
                     let flag = `${result[0].split('-')[0]} ${result[2]} ${result[3].split('-')[0]}`.replace(/[ ]/g, "");
                     // console.log(flag);
                     course.push({
@@ -189,9 +198,13 @@ const step_2 = (cookie) => {
             if (res.error) 
                 reject(res.error);
             
-            let $ = cheerio.load(res.body);
-            //console.log(res.body);
-            resolve($('li').attr('onclick').split(`'`)[1]);
+            try {
+                let $ = cheerio.load(res.body);
+                //console.log(res.body);
+                resolve($('li').attr('onclick').split(`'`)[1]);
+            } catch (error) {
+                reject(error);
+            }
         });
 
     })
@@ -203,8 +216,7 @@ const step_2 = (cookie) => {
 const step_3 = (cookie, url) => {
     return new Promise((resolve, reject) => {
 
-        var req = unirest("GET", url);
-
+        const req = unirest("GET", url);
         req.query({"Page": "SSR_VW_CLASS_FL", "pslnkid": "CS_S201605040129258749603935"});
 
         req.headers({
@@ -411,23 +423,31 @@ const main = async(user) => {
             "timezoneOffset": "0"
         }
         let cookie = await get_cookie_pp(data_pp);
-        // console.log(cookie);
+
         let course = await get_schedule_tabel(cookie);
-        // console.log(course);
+
         let info = prase_info(course);
         await step_1(cookie);
         let url = await step_2(cookie);
         let {ICElementNum, ICStateNum, ICSID} = await step_3(cookie, url);
         let courses = await step_4(cookie, ICElementNum, ICStateNum, ICSID, info);
+        if (!courses.length) {
+            throw 'FETCHERROR';
+        }
         return courses;
     } catch (error) {
-        // console.log(error);
-        return Promise.reject(error);
+        if (error == `USERWRONG`) {
+            return Promise.reject({status: 'USERWRONG', error});
+        } else {
+            return Promise.reject({status: 'FETCHERROR', error});
+        }
     }
 };
 
 module.exports = main;
 
-main({username: '3170111705', password: 'asdfghjkl'}).then(res => {
+main({username: '3170111704', password: 'asdfghjkl'}).then(res => {
     console.log(res);
-});
+}).catch(err => {
+    console.log(err);
+})
