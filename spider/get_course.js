@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 20:41:18
+ * @Last Modified time: 2018-04-26 20:44:18
  */
 
 const unirest = require("unirest");
@@ -446,8 +446,11 @@ const main = async(user) => {
 
 module.exports = main;
 
-main({username: '3170111704', password: 'asdfghjkl'}).then(res => {
-    console.log(res);
-}).catch(err => {
-    console.log(err);
-})
+/**
+ * Just for test
+ */
+// main({username: '3170111704', password: 'asdfghjkl'}).then(res => {
+//     console.log(res);
+// }).catch(err => {
+//     console.log(err);
+// })

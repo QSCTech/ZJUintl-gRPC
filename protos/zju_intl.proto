@@ -3,10 +3,12 @@ syntax = "proto3";
 package zjuintl;
 
 service ZJUintl {
+    rpc connect_test(Infosent) returns (Infoback) {}    
     rpc getCourse(User) returns (Courses) {}
-    rpc connect_test(Infosent) returns (Infoback) {}
+    rpc getBBGradeList()
 }
 
+//rpc => connect_test
 message Infosent {
     string name = 1;
 }
@@ -16,6 +18,8 @@ message Infoback {
     string message = 2;
 }
 
+
+//rpc => getCourse
 message User {
     string username = 1;
     string password = 2;

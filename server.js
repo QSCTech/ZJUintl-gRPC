@@ -2,7 +2,7 @@
  * @Author: Laphets 
  * @Date: 2018-04-25 00:13:41 
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 20:09:15
+ * @Last Modified time: 2018-04-26 20:55:08
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -18,8 +18,11 @@ const connect_test = (call, callback) => {
 
 const get_course = require('./spider/get_course');
 const getCourse = (call, callback) => {
-    // console.log(call.request);
-    // callback(null, { message: `OK, ${call.request.username}` });
+    if (!call.request.username || !call.request.password) {
+        callback(null, {
+            status: 'PARAMERROR'
+        });
+    }
     get_course({ username: call.request.username, password: call.request.password }).then((result) => {
         callback(null, {
             status: 'SUCCESS',
@@ -27,8 +30,8 @@ const getCourse = (call, callback) => {
         });
     }).catch((err) => {
         callback(null, {
-            status: 'FETCHERROR'
-        })
+            status: err.status
+        });
     })
 };
 
