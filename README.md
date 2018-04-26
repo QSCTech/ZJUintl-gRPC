@@ -8,27 +8,31 @@ For a develop who want to use our service, you do not need to learn gRPC at all,
 ## Endponit Lists
 ### connect_test
 Accepts
-```json
+```js
 {
     name: ''    //Your name
 }
 ```
 Returns
-```json
+```js
 {
-    message: '' //a string
+    status: ''
+    message: '' 
 }
-```json
+```
 ### getCourse
-```json
+```js
 {
     username: '',   //ZJUid
     password: ''    //Password corresponding to that ZJUid
 }
 ```
-```json
+```js
 {
-
+    status: '',
+    course: [{
+        id, name, time, type, room, instructor, week, month, date, weeknum
+    }]
 }
 ```
 
