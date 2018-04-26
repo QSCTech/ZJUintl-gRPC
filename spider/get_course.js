@@ -1,8 +1,8 @@
 /*
- * @Author: Laphets 
- * @Date: 2018-04-25 00:08:10 
+ * @Author: Laphets
+ * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 17:45:56
+ * @Last Modified time: 2018-04-26 19:51:32
  */
 
 const unirest = require("unirest");
@@ -20,9 +20,9 @@ const get_cookie_pp = (data) => {
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;" +
-                "q=0.8",
+                    "q=0.8",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded",
             "Upgrade-Insecure-Requests": "1",
             "Origin": "http://scrsprd.zju.edu.cn",
@@ -32,7 +32,7 @@ const get_cookie_pp = (data) => {
         });
         req.form(data);
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
             let cookie = res.headers["set-cookie"];
             // console.log(cookie);
@@ -48,56 +48,58 @@ const get_cookie_pp = (data) => {
 const get_schedule_tabel = (cookie) => {
     return new Promise((resolve, reject) => {
         const req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSEN" +
-            "RL_SCHD_W.GBL");
-        req.query({
-            "ICAGTarget": "start"
-        });
+                "RL_SCHD_W.GBL");
+        req.query({"ICAGTarget": "start"});
         req.headers({
             "Postman-Token": "e885e6e1-c9e2-4e51-9c69-3e91dd1621a9",
             "Cache-Control": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/65.0.3325.181 Safari/537.36",
+                    "Gecko) Chrome/65.0.3325.181 Safari/537.36",
             "Upgrade-Insecure-Requests": "1",
             "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOYEE/HRMS/c/NUI_FRAMEWORK.PT_AGSTARTPAGE" +
-                "_NUI.GBL?CONTEXTIDPARAMS=TEMPLATE_ID%3aPTPPNAVCOL&scname=ADMN_ENROLLMENT1",
+                    "_NUI.GBL?CONTEXTIDPARAMS=TEMPLATE_ID%3aPTPPNAVCOL&scname=ADMN_ENROLLMENT1",
             "Host": "scrsprd.zju.edu.cn",
             "Cookie": cookie,
             "Connection": "keep-alive",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;" +
-                "q=0.8"
+                    "q=0.8"
         });
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
-            // console.log(res.body);
-            let $ = cheerio.load(res.body)
-            let course = [];
-            // console.log($('#WEEKLY_SCHED_HTMLAREA').html());
-            let Entities = require('html-entities').XmlEntities;
-            entities = new Entities();
-            $('.SSSTEXTWEEKLY').each(function (i, elem) {
-                let result = $(elem)
-                    .html()
-                    .split('<br>');
-                //console.log(result);
-                let flag = `${result[0].split('-')[0]} ${result[2]} ${result[3].split('-')[0]}`.replace(/[ ]/g, "");
-                // console.log(flag);
-                course.push({
-                    id: result[0],
-                    name: entities.decode(result[1]),
-                    type: result[2],
-                    time: result[3],
-                    room: entities.decode(result[4]),
-                    instructor: entities.decode(result[6]),
-                    flag
+            try {
+                // console.log(res.body);
+                let $ = cheerio.load(res.body)
+                let course = [];
+                // console.log($('#WEEKLY_SCHED_HTMLAREA').html());
+                let Entities = require('html-entities').XmlEntities;
+                entities = new Entities();
+                $('.SSSTEXTWEEKLY').each(function (i, elem) {
+                    let result = $(elem)
+                        .html()
+                        .split('<br>');
+                    //console.log(result);
+                    let flag = `${result[0].split('-')[0]} ${result[2]} ${result[3].split('-')[0]}`.replace(/[ ]/g, "");
+                    // console.log(flag);
+                    course.push({
+                        id: result[0],
+                        name: entities.decode(result[1]),
+                        type: result[2],
+                        time: result[3],
+                        room: entities.decode(result[4]),
+                        instructor: entities.decode(result[6]),
+                        flag
+                    });
                 });
-            });
-            // console.log($('#WEEKLY_SCHED_HTMLAREA').text());
-            // //resolve($('#WEEKLY_SCHED_HTMLAREA').html()); console.log(course);
-            // console.log(res.body);
-            resolve(course);
+                // console.log($('#WEEKLY_SCHED_HTMLAREA').text());
+                // //resolve($('#WEEKLY_SCHED_HTMLAREA').html()); console.log(course);
+                // console.log(res.body);
+                resolve(course);
+            } catch (error) {
+                reject(error);
+            }
         });
     });
 }
@@ -109,7 +111,7 @@ const get_schedule_tabel = (cookie) => {
 const step_1 = (cookie) => {
     return new Promise((resolve, reject) => {
         const req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
-            "L.GBL");
+                "L.GBL");
         req.query({
             "Action": "U",
             "MD": "Y",
@@ -123,21 +125,21 @@ const step_1 = (cookie) => {
             "Postman-Token": "7a1a6a42-08b4-d1f9-44e9-d4a763a4e464",
             "Cache-Control": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Upgrade-Insecure-Requests": "1",
             "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOYEE/HRMS/c/NUI_FRAMEWORK.PT_LANDINGPAGE" +
-                ".GBL",
+                    ".GBL",
             "Host": "scrsprd.zju.edu.cn",
             "Cookie": cookie,
             "Connection": "keep-alive",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;" +
-                "q=0.8"
+                    "q=0.8"
         });
 
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
             resolve();
             // console.log(res.body);
@@ -152,7 +154,7 @@ const step_1 = (cookie) => {
 const step_2 = (cookie) => {
     return new Promise((resolve, reject) => {
         var req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_newwin/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_ST" +
-            "ART_PAGE_FL.GBL");
+                "ART_PAGE_FL.GBL");
 
         req.query({
             "Page": "SSR_START_PAGE_FL",
@@ -170,10 +172,10 @@ const step_2 = (cookie) => {
             "Postman-Token": "1bb1664b-9db6-9a69-9da6-bc53462aaa5a",
             "Cache-Control": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
-                "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
-                "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
+                    "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
+                    "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
             "Host": "scrsprd.zju.edu.cn",
             "Cookie": cookie,
             "Content-Type": "application/x-www-form-urlencoded",
@@ -184,9 +186,9 @@ const step_2 = (cookie) => {
         });
 
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
-
+            
             let $ = cheerio.load(res.body);
             //console.log(res.body);
             resolve($('li').attr('onclick').split(`'`)[1]);
@@ -203,19 +205,16 @@ const step_3 = (cookie, url) => {
 
         var req = unirest("GET", url);
 
-        req.query({
-            "Page": "SSR_VW_CLASS_FL",
-            "pslnkid": "CS_S201605040129258749603935"
-        });
+        req.query({"Page": "SSR_VW_CLASS_FL", "pslnkid": "CS_S201605040129258749603935"});
 
         req.headers({
             "Postman-Token": "b24ecf0b-eb85-dcc9-de06-37c74a60c065",
             "Cache-Control": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
-                "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
-                "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
+                    "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
+                    "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
             "Host": "scrsprd.zju.edu.cn",
             "Cookie": cookie,
             "Connection": "keep-alive",
@@ -225,47 +224,40 @@ const step_3 = (cookie, url) => {
         });
 
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
             let $ = cheerio.load(res.body);
             let ICElementNum = $('#ICElementNum').val();
             let ICStateNum = $('#ICStateNum').val();
             let ICSID = $('#ICSID').val();
-            resolve({
-                ICElementNum,
-                ICStateNum,
-                ICSID
-            })
+            resolve({ICElementNum, ICStateNum, ICSID})
             // console.log(res.body);
         });
 
     })
 }
 
-
 /**
  * Getting the course details from another page
  * @param {Array} cookie cookie
- * @param {Number} ICElementNum 
- * @param {Number} ICStateNum 
- * @param {Number} ICSID 
- * @param {*} info 
+ * @param {Number} ICElementNum
+ * @param {Number} ICStateNum
+ * @param {Number} ICSID
+ * @param {*} info
  */
 const step_4 = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
     return new Promise((resolve, reject) => {
-        var unirest = require("unirest");
-
-        var req = unirest("POST", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_COMPONE" +
-            "NT_FL.GBL");
+        const req = unirest("POST", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_COMPONE" +
+                "NT_FL.GBL");
 
         req.headers({
             "Postman-Token": "6ff85b8e-49fb-16dc-1842-5c5d0a6d2963",
             "Cache-Control": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
-                "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
-                "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
+                    "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
+                    "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
             "Origin": "http://scrsprd.zju.edu.cn",
             "Host": "scrsprd.zju.edu.cn",
             "Cookie": cookie,
@@ -297,8 +289,8 @@ const step_4 = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
             "ICActionPrompt": "false",
             "ICTypeAheadID": "",
             "ICBcDomData": "C~UnknownValue~EMPLOYEE~HRMS~NUI_FRAMEWORK.PT_LANDINGPAGE.GBL~PT_LANDINGPAGE~Stu" +
-                "dent Center~UnknownValue~UnknownValue~http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOY" +
-                "EE/HRMS/c/NUI_FRAMEWORK.PT_LANDINGPAGE.GBL~UnknownValue",
+                    "dent Center~UnknownValue~UnknownValue~http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOY" +
+                    "EE/HRMS/c/NUI_FRAMEWORK.PT_LANDINGPAGE.GBL~UnknownValue",
             "ICDNDSrc": "",
             "ICPanelHelpUrl": "",
             "ICPanelName": "",
@@ -311,85 +303,88 @@ const step_4 = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
         });
 
         req.end(function (res) {
-            if (res.error)
+            if (res.error) 
                 reject(res.error);
-            let $ = cheerio.load(res.body);
-            let courses = [];
-            $('.ps_box-scrollarea-row').each(function (i, elem) {
-                // console.log("begin");
-                let time = '';
-                $(elem)
-                    .find('.psc_halign-left')
-                    .children()
-                    .each(function (i1, elem1) {
-                        if (i1 == 2) {
-                            time = $(elem1).text();
-                        }
-                    });
-                const tmp = time.split(' ');
-                let [week,
-                    month,
-                    date
-                ] = tmp;
-                let map = {
-                    'Monday': 1,
-                    'Tuesday': 2,
-                    'Wednesday': 3,
-                    'Thursday': 4,
-                    'Friday': 5,
-                    'Saturday': 6,
-                    'Sunday': 7
-                }
-                let weeknum = map[week];
-                // let courses = [];
-                $(elem)
-                    .find('tr')
-                    .each(function (i1, elem1) {
-                        let flag = '',
-                            starttime = '';
-                        $(elem1)
-                            .find('td')
-                            .each(function (i2, elem2) {
-                                if (i2 == 0) {
-                                    //Time console.log($(elem2).text().replace(/[\n]/g, "")) console.log();
-                                    starttime = $(elem2)
-                                        .find('.ps_box-value')
-                                        .text();
-                                } else if (i2 == 1) {
-                                    // Course and location let all = $(elem2).find('a').text(); console.log(all);
-                                    flag = $(elem2)
-                                        .find('a')
-                                        .text()
-                                        .replace(/[ ]/g, "");
-                                    // onecourse.location = $(elem2)     .find('.ps_box-value')     .text();
-                                    // console.log($(elem2).find('a').text());
-                                    // console.log($(elem2).find('.ps_box-value').text());
-                                }
-                                // console.log(i2, $(elem2).text());
-                            });
-                        flag = `${flag}${starttime}`.replace(/[ ]/g, "");
-                        //console.log(flag);
-                        const ojbk = info[flag];
-                        if (ojbk) {
-                            //Every-Two-Week
-                            courses.push({
-                                id: ojbk.id,
-                                name: ojbk.name,
-                                time: ojbk.time,
-                                type: ojbk.type,
-                                room: ojbk.room,
-                                instructor: ojbk.instructor,
-                                week,
-                                month,
-                                date,
-                                weeknum
-                            });
-                        }
-                    });
-                // console.log("end");
-            });
-            // console.log(courses); console.log(res.body);
-            resolve(courses);
+            try {
+                let $ = cheerio.load(res.body);
+                let courses = [];
+                $('.ps_box-scrollarea-row').each(function (i, elem) {
+                    // console.log("begin");
+                    let time = '';
+                    $(elem)
+                        .find('.psc_halign-left')
+                        .children()
+                        .each(function (i1, elem1) {
+                            if (i1 == 2) {
+                                time = $(elem1).text();
+                            }
+                        });
+                    const tmp = time.split(' ');
+                    let [week,
+                        month,
+                        date] = tmp;
+                    let map = {
+                        'Monday': 1,
+                        'Tuesday': 2,
+                        'Wednesday': 3,
+                        'Thursday': 4,
+                        'Friday': 5,
+                        'Saturday': 6,
+                        'Sunday': 7
+                    }
+                    let weeknum = map[week];
+                    // let courses = [];
+                    $(elem)
+                        .find('tr')
+                        .each(function (i1, elem1) {
+                            let flag = '',
+                                starttime = '';
+                            $(elem1)
+                                .find('td')
+                                .each(function (i2, elem2) {
+                                    if (i2 == 0) {
+                                        //Time console.log($(elem2).text().replace(/[\n]/g, "")) console.log();
+                                        starttime = $(elem2)
+                                            .find('.ps_box-value')
+                                            .text();
+                                    } else if (i2 == 1) {
+                                        // Course and location let all = $(elem2).find('a').text(); console.log(all);
+                                        flag = $(elem2)
+                                            .find('a')
+                                            .text()
+                                            .replace(/[ ]/g, "");
+                                        // onecourse.location = $(elem2)     .find('.ps_box-value')     .text();
+                                        // console.log($(elem2).find('a').text());
+                                        // console.log($(elem2).find('.ps_box-value').text());
+                                    }
+                                    // console.log(i2, $(elem2).text());
+                                });
+                            flag = `${flag}${starttime}`.replace(/[ ]/g, "");
+                            //console.log(flag);
+                            const ojbk = info[flag];
+                            if (ojbk) {
+                                //Every-Two-Week
+                                courses.push({
+                                    id: ojbk.id,
+                                    name: ojbk.name,
+                                    time: ojbk.time,
+                                    type: ojbk.type,
+                                    room: ojbk.room,
+                                    instructor: ojbk.instructor,
+                                    week,
+                                    month,
+                                    date,
+                                    weeknum
+                                });
+                            }
+                        });
+                    // console.log("end");
+                });
+                // console.log(courses); console.log(res.body);
+                resolve(courses);
+            } catch (error) {
+                reject(error);
+            }
         });
 
     })
@@ -406,7 +401,7 @@ const prase_info = (courses) => {
     // console.log(info);
 }
 
-const main = async (user) => {
+const main = async(user) => {
     try {
         let data_pp = {
             "userid": user.username,
@@ -422,20 +417,17 @@ const main = async (user) => {
         let info = prase_info(course);
         await step_1(cookie);
         let url = await step_2(cookie);
-        let {
-            ICElementNum,
-            ICStateNum,
-            ICSID
-        } = await step_3(cookie, url);
+        let {ICElementNum, ICStateNum, ICSID} = await step_3(cookie, url);
         let courses = await step_4(cookie, ICElementNum, ICStateNum, ICSID, info);
         return courses;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        return Promise.reject(error);
     }
 };
 
 module.exports = main;
 
-main({ username: '3170111705', password: 'asdfghjkl' }).then(res => {
+main({username: '3170111705', password: 'asdfghjkl'}).then(res => {
     console.log(res);
 });
