@@ -2,7 +2,7 @@
  * @Author: Laphets 
  * @Date: 2018-04-25 00:13:41 
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 17:39:11
+ * @Last Modified time: 2018-04-26 20:09:15
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -22,9 +22,13 @@ const getCourse = (call, callback) => {
     // callback(null, { message: `OK, ${call.request.username}` });
     get_course({ username: call.request.username, password: call.request.password }).then((result) => {
         callback(null, {
-            status: 0,
+            status: 'SUCCESS',
             course: result
         });
+    }).catch((err) => {
+        callback(null, {
+            status: 'FETCHERROR'
+        })
     })
 };
 

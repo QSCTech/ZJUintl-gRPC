@@ -12,7 +12,8 @@ message Infosent {
 }
 
 message Infoback {
-    string message = 1;
+    string status = 1;
+    string message = 2;
 }
 
 message User {
@@ -21,7 +22,7 @@ message User {
 }
 
 message Courses {
-    int32 status = 1;
+    string status = 1;
     repeated Course course = 2;
 }
 
