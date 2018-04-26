@@ -38,11 +38,14 @@ Returns
 
 
 ## Status Code Reference
-| Case                                  | Code        | Generated at Client or Server |
-| ------------------------------------- | :---------- | ----------------------------- |
-| Username or password is wrong.        | USERWRONG   | Server                        |
-| Some error occurs when fetching data. | FETCHERROR  | Server                        |
-| Some error occurs for your client.    | CLIENTERROR | Client                        |
+| Case                                                     | Code        | Generated at Client or Server |
+| -------------------------------------------------------- | :---------- | ----------------------------- |
+| Username or password is wrong.                           | USERWRONG   | Server                        |
+| Some error occurs when fetching data.                    | FETCHERROR  | Server                        |
+| Some error occurs for your client.                       | CLIENTERROR | Client                        |
+| Success fetching data.                                   | SUCCESS     | Both                          |
+| You didn't input complete user info(username, password). | PARAMERROR  | Server                        |
+
 
 ## Controbutor
 Laphets `i@laphets.com` 求是潮技术研发中心
