@@ -2,12 +2,16 @@
  * @Author: Laphets 
  * @Date: 2018-04-25 00:08:10 
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 16:49:11
+ * @Last Modified time: 2018-04-26 17:45:56
  */
 
 const unirest = require("unirest");
 const cheerio = require("cheerio");
 
+/**
+ * Login and get the cookie
+ * @param {object} data Data for user
+ */
 const get_cookie_pp = (data) => {
     return new Promise((resolve, reject) => {
         var req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
@@ -37,6 +41,10 @@ const get_cookie_pp = (data) => {
     })
 }
 
+/**
+ * Get the weekly schedule table
+ * @param {Array} cookie Authority Cookie
+ */
 const get_schedule_tabel = (cookie) => {
     return new Promise((resolve, reject) => {
         const req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSEN" +
@@ -94,11 +102,14 @@ const get_schedule_tabel = (cookie) => {
     });
 }
 
+/**
+ * Doing some tricky thing emmmm.
+ * @param {Array} cookie cookie for auth
+ */
 const step_1 = (cookie) => {
     return new Promise((resolve, reject) => {
-        var req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
+        const req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
             "L.GBL");
-
         req.query({
             "Action": "U",
             "MD": "Y",
@@ -134,7 +145,10 @@ const step_1 = (cookie) => {
 
     })
 }
-
+/**
+ * Doing some tricky thing emmmm.
+ * @param {Array} cookie cookie for auth
+ */
 const step_2 = (cookie) => {
     return new Promise((resolve, reject) => {
         var req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_newwin/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_ST" +
@@ -180,7 +194,10 @@ const step_2 = (cookie) => {
 
     })
 }
-
+/**
+ * Doing some tricky thing emmmm.
+ * @param {Array} cookie cookie for auth
+ */
 const step_3 = (cookie, url) => {
     return new Promise((resolve, reject) => {
 
@@ -225,6 +242,15 @@ const step_3 = (cookie, url) => {
     })
 }
 
+
+/**
+ * Getting the course details from another page
+ * @param {Array} cookie cookie
+ * @param {Number} ICElementNum 
+ * @param {Number} ICStateNum 
+ * @param {Number} ICSID 
+ * @param {*} info 
+ */
 const step_4 = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
     return new Promise((resolve, reject) => {
         var unirest = require("unirest");
@@ -410,4 +436,6 @@ const main = async (user) => {
 
 module.exports = main;
 
-// main({username: '3170111705', password: 'asdfghjkl'});
+main({ username: '3170111705', password: 'asdfghjkl' }).then(res => {
+    console.log(res);
+});
