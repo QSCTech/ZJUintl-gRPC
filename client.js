@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-27 09:04:52
+ * @Last Modified time: 2018-04-27 09:46:45
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -26,7 +26,15 @@ const user = require('./config').test_user;
 // });
 
 //Code for get course(time table)
-client.getCourse({ username: test_user.user, password: test_user.password }, (err, response) => {
+// client.getCourse({ username: user.username, password: user.password }, (err, response) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log(response);
+//     }
+// })
+
+client.getBBGradeList({ username: user.username, password: user.password }, (err, response) => {
     if (err) {
         console.log(err);
     } else {

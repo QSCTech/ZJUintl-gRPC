@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-26 20:57:12
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-27 09:03:05
+ * @Last Modified time: 2018-04-27 09:50:28
  */
 
 const unirest = require("unirest");
@@ -88,9 +88,9 @@ const get_grade_bb = (cookie) => {
                     let grade = arr.sv_streamEntries[i].itemSpecificData.gradeDetails.grade;
                     if (grade !== '-') {
                         // let url = `https://c.zju.edu.cn${arr.sv_streamEntries[i].se_rhs}`;
-                        let course = courselist[arr.sv_streamEntries[i].se_courseId];
+                        let name = courselist[arr.sv_streamEntries[i].se_courseId];
                         let id = arr.sv_streamEntries[i].se_courseId;
-                        result.push({course, grade, id});
+                        result.push({name, grade, id});
                         // console.log(url); console.log() console.log(`课程${course} 的成绩为
                         // ${grade}(total)`);
                     }
@@ -201,12 +201,7 @@ const get_certaingrade = async(user, courseid) => {
 }
 
 module.exports = {
-
+    get_certaingrade,
+    get_totalgrade
 }
-get_totalgrade({username: '3170111705', password: ''}).then(res => {
-    console.log(res);
-})
-
-get_certaingrade({ username: '3170111705', password: '' }, '_2823_1').then(res => {
-    console.log(res);
-});
+//'_2823_1'
