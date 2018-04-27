@@ -5,7 +5,19 @@ package zjuintl;
 service ZJUintl {
     rpc connect_test(Infosent) returns (Infoback) {}    
     rpc getCourse(User) returns (Courses) {}
-    rpc getBBGradeList()
+    rpc getBBGradeList(User) returns (BBGradeList) {}
+}
+
+//rpc => getBBGradeList
+message BBGradeList {
+    string status = 1;
+    repeated BBCourseitem courses = 2;
+}
+
+message BBCourseitem {
+    string name = 1;
+    string grade = 2;
+    string id = 3;
 }
 
 //rpc => connect_test
