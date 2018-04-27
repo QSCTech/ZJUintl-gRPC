@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-26 20:57:12
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-26 21:41:54
+ * @Last Modified time: 2018-04-27 09:03:05
  */
 
 const unirest = require("unirest");
@@ -201,12 +201,12 @@ const get_certaingrade = async(user, courseid) => {
 }
 
 module.exports = {
-    
+
 }
-get_totalgrade({username: '3170111705', password: 'asdfghjkl'}).then(res => {
+get_totalgrade({username: '3170111705', password: ''}).then(res => {
     console.log(res);
 })
 
-get_certaingrade({ username: '3170111705', password: 'asdfghjkl' }, '_2823_1').then(res => {
+get_certaingrade({ username: '3170111705', password: '' }, '_2823_1').then(res => {
     console.log(res);
 });
