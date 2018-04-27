@@ -6,6 +6,7 @@ service ZJUintl {
     rpc connect_test(Infosent) returns (Infoback) {}    
     rpc getCourse(User) returns (Courses) {}
     rpc getBBGradeList(User) returns (BBGradeList) {}
+    rpc getBBGradeItem(BBGradeUser) returns (BBGradeItem) {}
 }
 
 //rpc => getBBGradeList
@@ -19,6 +20,12 @@ message BBCourseitem {
     string grade = 2;
     string id = 3;
 }
+
+//rpc => 
+message BBGradeUser {
+    
+}
+
 
 //rpc => connect_test
 message Infosent {
