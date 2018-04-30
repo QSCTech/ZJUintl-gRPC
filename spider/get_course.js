@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-29 16:59:58
+ * @Last Modified time: 2018-04-30 15:50:55
  */
 
 const unirest = require("unirest");
@@ -425,6 +425,14 @@ const prase_time = (time) => {
     return {hour, min}
 }
 
+const generate_contine_number = (start, end) => {
+    const tmp = [];
+    for (let x = start; x <= end; x++) {
+        tmp.push(x);
+    }
+    return tmp;
+}
+
 const process_course = (courses) => {
     let map = {};
     for (let i in courses) {
@@ -463,7 +471,7 @@ const process_course = (courses) => {
                 startTimeMinute: startTime.min,
                 endTimeHour: endTime.hour,
                 endTimeMinute: endTime.min,
-                time: [],
+                time: generate_contine_number(startTime.hour-7, endTime.hour-7),
                 week: {
                     type: 'both',
                     weeks: []
@@ -471,7 +479,7 @@ const process_course = (courses) => {
                 day: ~~item.date + 1,
                 desc: ''
             };
-            // console.log(cur_time);
+            console.log(cur_time);
             cur.place.push(item.place);
             cur.time.push(cur_time);
         }
