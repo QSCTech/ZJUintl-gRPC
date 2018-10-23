@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-27 22:45:37
+ * @Last Modified time: 2018-10-23 22:31:06
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -103,8 +103,10 @@ const getServer = () => {
     return server;
 }
 
+const argv = require('minimist')(process.argv.slice(2));
+
 const Server = getServer();
 const port = require('./config').port;
-Server.bind(port, grpc.ServerCredentials.createInsecure());
-console.log(`Server is running at ${port}`);
+Server.bind(`0.0.0.0:${argv['port'] || port}`, grpc.ServerCredentials.createInsecure());
+console.log(`Server is running at 0.0.0.0:${argv['port'] || port}`);
 Server.start();

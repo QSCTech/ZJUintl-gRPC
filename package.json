@@ -13,6 +13,7 @@
     "cheerio": "^1.0.0-rc.2",
     "grpc": "^1.12.4",
     "html-entities": "^1.2.1",
+    "minimist": "^1.2.0",
     "unirest": "^0.5.1"
   }
 }
