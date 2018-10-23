@@ -6,17 +6,20 @@ services:
   ZJUintl-GRPC:
     image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
-      - default
       - traefik-net
-    build: .
+    #build: .
     #ports:
     #  - "50053:50053"
     deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      
       labels:
         - "traefik.port=80"
         - "traefik.docker.network=traefik-net"
         - "traefik.frontend.rule=Host:zjuintl.traefik.local"
 networks:
   traefik-net:
-    driver: overlay
-#    external: true
+    # driver: overlay
+    external: true
