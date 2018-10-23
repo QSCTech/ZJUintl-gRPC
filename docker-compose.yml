@@ -4,7 +4,7 @@ services:
   redis:
     image: redis:alpine
   ZJUintl-GRPC:
-    image: ${RELEASE_IMAGE}
+    image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
       - default
       - traefik-net
