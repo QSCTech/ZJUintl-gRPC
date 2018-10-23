@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE ${app_port}
 
-CMD [ "node", "server.js", "--port=8080" ]
+CMD [ "node", "server.js", "--port=50053" ]
