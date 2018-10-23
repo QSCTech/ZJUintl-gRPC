@@ -4,7 +4,19 @@ services:
   redis:
     image: redis:alpine
   ZJUintl-GRPC:
-    image: 127.0.0.1:5000/stackdemo
+    image: ${RELEASE_IMAGE}
+    networks:
+      - default
+      - traefik-net
     build: .
-    ports:
-      - "50053:50053"
+    #ports:
+    #  - "50053:50053"
+    deploy:
+      labels:
+        - "traefik.port=80"
+        - "traefik.docker.network=traefik-net"
+        - "traefik.frontend.rule=Host:zjuintl.traefik.local"
+networks:
+  traefik-net:
+    driver: overlay
+#    external: true
