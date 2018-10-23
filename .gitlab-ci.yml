@@ -5,7 +5,7 @@ services:
 
 variables:
   CONTAINER_IMAGE: harbor.zjuqsc.com/mobile-api/intl
-  IMAGE_TAG: harbor.zjuqsc.com/mobile-api/intl:$CI_COMMIT_REF_NAME
+  IMAGE_TAG: harbor.zjuqsc.com/mobile-api/intl:$CI_COMMIT_TAG
 
 before_script:
   - docker login -u docker -p $DOCKER_PASSWORD harbor.zjuqsc.com
