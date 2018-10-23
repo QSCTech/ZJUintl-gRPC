@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-30 15:50:55
+ * @Last Modified time: 2018-09-10 21:45:38
  */
 
 const unirest = require("unirest");
@@ -546,8 +546,8 @@ module.exports = main;
 /**
  * Just for test
  */
-// main({username: '3170111705', password: ''}).then(res => {
-//     console.log(res);
-// }).catch(err => {
-//     console.log(err);
-// })
+main({username: '3170111705', password: 'l3169856419'}).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+})
