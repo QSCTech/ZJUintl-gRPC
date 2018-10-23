@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-09-10 21:45:38
+ * @Last Modified time: 2018-10-23 22:13:51
  */
 
 const unirest = require("unirest");
@@ -433,6 +433,36 @@ const generate_contine_number = (start, end) => {
     return tmp;
 }
 
+const easy_prase = (course) => {
+    const new_course = []
+    // for (let i = 1; i <= 7; i++) {
+    //     new_course.push([])
+    // }
+
+    course.forEach((item) => {
+        let time = item.time.split(' - ');
+        let startTime = prase_time(time[0]),
+            endTime = prase_time(time[1]);
+        let duration = 0
+        if (endTime.hour === startTime.hour) {
+            duration = endTime.min - startTime.min
+        } else {
+            duration += 60 - startTime.min
+            duration += endTime.hour
+            duration += 60 * (endTime.hour - startTime.hour - 1)
+        }
+        // const duration = (endtime.hour-startTime.hour)*60+()
+        new_course.push({
+            ...item,
+            startTime,
+            endTime,
+            duration
+        })
+    })
+
+    return new_course
+}
+
 const process_course = (courses) => {
     let map = {};
     for (let i in courses) {
@@ -531,7 +561,7 @@ const main = async(user) => {
         if (!courses.length) {
             throw 'FETCHERROR';
         }
-        return process_course(courses);
+        return easy_prase(courses);
     } catch (error) {
         if (error == `USERWRONG`) {
             return Promise.reject({status: 'USERWRONG', error});
@@ -546,8 +576,8 @@ module.exports = main;
 /**
  * Just for test
  */
-main({username: '3170111705', password: 'l3169856419'}).then(res => {
-    console.log(res);
-}).catch(err => {
-    console.log(err);
-})
+// main({username: '3170111705', password: ''}).then(res => {
+//     console.log(res);
+// }).catch(err => {
+//     console.log(err);
+// })
