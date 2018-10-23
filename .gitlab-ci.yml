@@ -7,7 +7,6 @@ variables:
   CONTAINER_IMAGE: harbor.zjuqsc.com/mobile-api/intl
   IMAGE_TAG: harbor.zjuqsc.com/mobile-api/intl:$CI_COMMIT_REF_SLUG
   SERVICE_NAME: ZJUintl-gRPC
-  RELEASE_IMAGE: 
 
 before_script:
   - docker login -u docker -p $DOCKER_PASSWORD harbor.zjuqsc.com
