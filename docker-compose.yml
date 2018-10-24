@@ -39,7 +39,7 @@ services:
   redis:
     image: redis:alpine
   ZJUintl-GRPC:
-    image: laphets/grpc-test
+    image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
       - traefik-net
     deploy:
