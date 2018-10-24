@@ -51,7 +51,7 @@ services:
         - "traefik.port=80"
         - "traefik.docker.network=traefik-net"
         - "traefik.backend=ZJUintl-gRPC"
-        - "traefik.frontend.rule=Host:zjuintl.traefik.local"
+        - "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
 networks:
   traefik-net:
     driver: overlay
