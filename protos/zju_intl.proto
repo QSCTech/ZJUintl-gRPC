@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package zjuintl;
+package qscrpc;
 
 service ZJUintl {
     rpc connect_test(Infosent) returns (Infoback) {}    

@@ -2,14 +2,14 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-23 22:31:06
+ * @Last Modified time: 2018-10-25 00:07:09
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
 const grpc = require('grpc');
 
 let protoDescriptor = grpc.load(PROTO_PATH);
-let zjuintl = protoDescriptor.zjuintl;
+let qscrpc = protoDescriptor.qscrpc;
 
 /**
  * connect_test resolver
@@ -94,7 +94,7 @@ const getBBCertainGrade = (call, callback) => {
  */
 const getServer = () => {
     let server = new grpc.Server();
-    server.addProtoService(zjuintl.ZJUintl.service, {
+    server.addProtoService(qscrpc.ZJUintl.service, {
         getCourse: getCourse,
         connect_test: connect_test,
         getBBGradeList: getBBGradeList,
