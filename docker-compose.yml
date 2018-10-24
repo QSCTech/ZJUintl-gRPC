@@ -1,25 +1,58 @@
 version: '3'
 
 services: 
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8082:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks: 
+      - traefik-net
+  traefik:
+    image: traefik
+    command: 
+      - "--docker"
+      - "--docker.swarmMode"
+      - "--docker.domain=traefik"
+      - "--docker.watch"
+      - "--api"
+    ports: 
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks: 
+      - traefik-net
   redis:
     image: redis:alpine
   ZJUintl-GRPC:
-    image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
+    image: laphets/grpc-test
     networks:
       - traefik-net
-    #build: .
-    #ports:
-    #  - "50053:50053"
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
-      
       labels:
+        - "traefik.tags=grpc"
         - "traefik.port=80"
         - "traefik.docker.network=traefik-net"
+        - "traefik.backend=ZJUintl-gRPC"
         - "traefik.frontend.rule=Host:zjuintl.traefik.local"
 networks:
   traefik-net:
-    # driver: overlay
+    driver: overlay
     external: true
