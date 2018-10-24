@@ -62,7 +62,9 @@ services:
         - "traefik.protocol=h2c"
         - "traefik.docker.network=traefik-net"
         - "traefik.backend=ZJUintl-gRPC"
-        - "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
+        #- "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
+        - "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUintl/"
+
 networks:
   traefik-net:
     driver: overlay
