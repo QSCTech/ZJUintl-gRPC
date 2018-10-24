@@ -55,4 +55,3 @@ services:
 networks:
   traefik-net:
     driver: overlay
-    external: true
