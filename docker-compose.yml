@@ -38,6 +38,16 @@ services:
       - traefik-net
   redis:
     image: redis:alpine
+  whoami:
+    image: emilevauge/whoami
+    networks:
+      - traefik-net
+    deploy:
+      replicas: 2
+      labels:
+        - "traefik.port=80"
+        - "traefik.frontend.rule=Host:whoami.rpc.zjuqsc.com"
+        - "traefik.docker.network=traefik-net"
   ZJUintl-GRPC:
     image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
