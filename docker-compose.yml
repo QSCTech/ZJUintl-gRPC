@@ -4,7 +4,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - "8082:8080"
+      - "8889:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
@@ -21,8 +21,8 @@ services:
       - "--docker.watch"
       - "--api"
     ports: 
-      - "8080:8080"
-      - "80:80"
+      - "8891:8080"
+      - "8890:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
@@ -48,7 +48,7 @@ services:
         condition: on-failure
       labels:
         - "traefik.tags=grpc"
-        - "traefik.port=80"
+        - "traefik.port=50053"
         - "traefik.docker.network=traefik-net"
         - "traefik.backend=ZJUintl-gRPC"
         - "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
