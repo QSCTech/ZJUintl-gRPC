@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-23 22:31:57
+ * @Last Modified time: 2018-10-24 21:21:18
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -14,7 +14,7 @@ const argv = require('minimist')(process.argv.slice(2));
 let client = new zjuintl.ZJUintl(`0.0.0.0:${argv['port'] || require('./config').port}`
     , grpc.credentials.createInsecure());
 
-const user = require('./config').test_user;
+const user = require('./test_user').test_user;
 
 
 // Code for connect test
