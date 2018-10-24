@@ -48,7 +48,7 @@ services:
         condition: on-failure
       labels:
         - "traefik.tags=grpc"
-        - "traefik.port=50053"
+        - "traefik.port=8890"
         - "traefik.docker.network=traefik-net"
         - "traefik.backend=ZJUintl-gRPC"
         - "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
