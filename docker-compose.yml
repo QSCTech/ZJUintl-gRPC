@@ -49,6 +49,7 @@ services:
       labels:
         - "traefik.tags=grpc"
         - "traefik.port=8890"
+        - "traefik.protocol=h2c"
         - "traefik.docker.network=traefik-net"
         - "traefik.backend=ZJUintl-gRPC"
         - "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
