@@ -15,7 +15,7 @@ services:
         - "traefik.docker.network=traefik_net"
   
   ZJUauth-gRPC:
-    image: 172.20.1.181/mobile-api/auth:master
+    image: harbor.zjuqsc.com/mobile-api/auth:master-38f817f0a3d077db4f5a655dd2e5d74f8dad9bcd
     networks:
       - traefik_net
     deploy:
