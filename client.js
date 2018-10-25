@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-25 07:55:54
+ * @Last Modified time: 2018-10-25 10:42:25
  */
 
 const PROTO_PATH = __dirname + '/protos/zju_intl.proto';
@@ -15,7 +15,6 @@ let client = new qscrpc.ZJUintl(`10.202.68.181:8890`
     , grpc.credentials.createInsecure());
 
 const user = require('./test_user').test_user;
-
 
 // const meta = new grpc.Metadata()
 // meta.add('Host', 'zjuintl.rpc.zjuqsc.com')
