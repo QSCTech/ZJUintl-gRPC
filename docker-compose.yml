@@ -29,7 +29,6 @@ services:
         - "traefik.backend=ZJUintl-gRPC"
         #- "traefik.frontend.rule=Host:intl.rpc.zjuqsc.com"
         - "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUintl/"
-
 networks:
   traefik_net:
     external: true
