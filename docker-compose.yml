@@ -1,57 +1,22 @@
 version: '3'
 
 services: 
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8889:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-    networks: 
-      - traefik-net
-  traefik:
-    image: traefik
-    command: 
-      - "--docker"
-      - "--docker.swarmMode"
-      - "--docker.domain=traefik"
-      - "--docker.watch"
-      - "--api"
-    ports: 
-      - "8891:8080"
-      - "8890:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.role == manager]
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-    networks: 
-      - traefik-net
   redis:
     image: redis:alpine
   whoami:
     image: emilevauge/whoami
     networks:
-      - traefik-net
+      - traefik_net
     deploy:
       replicas: 2
       labels:
         - "traefik.port=80"
         - "traefik.frontend.rule=Host:whoami.rpc.zjuqsc.com"
-        - "traefik.docker.network=traefik-net"
+        - "traefik.docker.network=traefik_net"
   ZJUintl-GRPC:
     image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
-      - traefik-net
+      - traefik_net
     deploy:
       replicas: 2
       restart_policy:
@@ -60,11 +25,11 @@ services:
         - "traefik.tags=grpc"
         - "traefik.port=50053"
         - "traefik.protocol=h2c"
-        - "traefik.docker.network=traefik-net"
+        - "traefik.docker.network=traefik_net"
         - "traefik.backend=ZJUintl-gRPC"
         #- "traefik.frontend.rule=Host:zjuintl.rpc.zjuqsc.com"
         - "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUintl/"
 
 networks:
-  traefik-net:
-    driver: overlay
+  traefik_net:
+    external: true
