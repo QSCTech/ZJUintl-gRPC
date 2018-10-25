@@ -13,24 +13,7 @@ services:
         - "traefik.port=80"
         - "traefik.frontend.rule=Host:whoami.rpc.zjuqsc.com"
         - "traefik.docker.network=traefik_net"
-  
-  ZJUauth-gRPC:
-    image: harbor.zjuqsc.com/mobile-api/auth:master-38f817f0a3d077db4f5a655dd2e5d74f8dad9bcd
-    networks:
-      - traefik_net
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      labels:
-        - "traefik.tags=grpc"
-        - "traefik.port=50053"
-        - "traefik.protocol=h2c"
-        - "traefik.docker.network=traefik_net"
-        - "traefik.backend=ZJUauth111-gRPC"
-        #- "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUauth/"
-        - "traefik.frontend.rule=Host:ttttt2.rpc.zjuqsc.com"
-  ZJUintl-GRPC:
+  ZJUintl-gRPC:
     image: ${IMAGE_TAG}-${CI_COMMIT_SHA}
     networks:
       - traefik_net
@@ -44,8 +27,8 @@ services:
         - "traefik.protocol=h2c"
         - "traefik.docker.network=traefik_net"
         - "traefik.backend=ZJUintl-gRPC"
-        - "traefik.frontend.rule=Host:intl.rpc.zjuqsc.com"
-        #- "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUintl/"
+        #- "traefik.frontend.rule=Host:intl.rpc.zjuqsc.com"
+        - "traefik.frontend.rule=PathPrefix:/qscrpc.ZJUintl/"
 
 networks:
   traefik_net:
