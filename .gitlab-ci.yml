@@ -28,6 +28,6 @@ deploy-to-swarm:
     - swarm
   script:
     - docker pull $IMAGE_TAG || true
-    - docker build -t $IMAGE_TAG-$CI_COMMIT_SHA .
+    - docker build --cache-from -t $IMAGE_TAG-$CI_COMMIT_SHA .
     - docker push $IMAGE_TAG-$CI_COMMIT_SHA
     - docker stack deploy --with-registry-auth --compose-file=docker-compose.yml ${SERVICE_NAME}
