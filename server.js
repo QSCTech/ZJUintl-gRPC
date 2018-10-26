@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-26 19:24:23
+ * @Last Modified time: 2018-10-26 19:35:13
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
