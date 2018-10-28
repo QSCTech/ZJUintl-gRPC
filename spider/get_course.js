@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-23 22:13:51
+ * @Last Modified time: 2018-10-28 17:27:01
  */
 
 const unirest = require("unirest");
@@ -448,7 +448,7 @@ const easy_prase = (course) => {
             duration = endTime.min - startTime.min
         } else {
             duration += 60 - startTime.min
-            duration += endTime.hour
+            duration += endTime.min
             duration += 60 * (endTime.hour - startTime.hour - 1)
         }
         // const duration = (endtime.hour-startTime.hour)*60+()

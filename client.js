@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-26 20:00:21
+ * @Last Modified time: 2018-10-26 21:31:29
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -29,21 +29,21 @@ const user = require('./test_user').test_user;
 // });
 
 //Code for get course(time table)
-// client.getCourse({ username: user.username, password: user.password }, (err, response) => {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log(response);
-//     }
-// })
-
-client.getBBGradeList({ username: user.username, password: user.password }, (err, response) => {
+client.getCourse({ username: user.username, password: user.password }, (err, response) => {
     if (err) {
         console.log(err);
     } else {
         console.log(response);
     }
-});
+})
+
+// client.getBBGradeList({ username: user.username, password: user.password }, (err, response) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log(response);
+//     }
+// });
 
 // client.getBBCertainGrade({ username: user.username, password: user.password, courseid: user.courseid }, (err, response) => {
 //     if (err) {
