@@ -6,7 +6,7 @@ services:
     networks:
       - traefik_net
     deploy:
-      replicas: 2
+      replicas: 1
       labels:
         - "traefik.port=80"
         - "traefik.frontend.rule=Host:whoami.rpc.zjuqsc.com"
