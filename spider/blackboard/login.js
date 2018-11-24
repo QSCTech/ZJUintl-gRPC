@@ -13,7 +13,6 @@ const login = ({ username, password }) => {
     return new Promise((resolve, reject) => {
         const req = unirest("POST", "https://c.zju.edu.cn/webapps/bb-sso-BBLEARN/authValidate/customLoginFromLogin");
         req.headers({
-            "Postman-Token": "85626387-041f-828e-b13a-fd1d2c90a488",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate, br",
             "Referer": "https://c.zju.edu.cn/",

@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-26 20:57:12
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-24 23:17:13
+ * @Last Modified time: 2018-11-24 23:22:35
  */
 
 const unirest = require("unirest");
@@ -16,7 +16,6 @@ const get_cookie_bb = (data) => {
     return new Promise((resolve, reject) => {
         const req = unirest("POST", "https://c.zju.edu.cn/webapps/bb-sso-BBLEARN/authValidate/customLoginFromLogin");
         req.headers({
-            "Postman-Token": "85626387-041f-828e-b13a-fd1d2c90a488",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate, br",
             "Referer": "https://c.zju.edu.cn/",
@@ -57,7 +56,6 @@ const get_grade_bb = (cookie) => {
     return new Promise((resolve, reject) => {
         const req = unirest("POST", "https://c.zju.edu.cn/webapps/streamViewer/streamViewer");
         req.headers({
-            "Postman-Token": "dda8236f-38e1-3e9f-d13d-f79994d80590",
             "Cache-Control": "no-cache",
             "Cookie": cookie,
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
@@ -120,7 +118,6 @@ const get_one_grade = (cookie, id) => {
         req.query({"course_id": id, "stream_name": "mygrades"});
 
         req.headers({
-            "Postman-Token": "0d8a05d1-e77c-6475-ba0b-a9ecd058048d",
             "Cookie": cookie,
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate, br",
