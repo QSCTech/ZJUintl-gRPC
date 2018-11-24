@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-26 19:35:13
+ * @Last Modified time: 2018-11-24 20:56:01
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -41,7 +41,7 @@ const getCourse = (call, callback) => {
     })
 };
 
-const get_bbgrade = require('./spider/get_bbgrade');
+const get_bbgrade = require('./spider/blackboard/get_bbgrade');
 /**
  * getBBGradeList resolver
  * @param {*} call

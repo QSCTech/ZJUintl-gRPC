@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-26 20:57:12
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-04-27 20:57:49
+ * @Last Modified time: 2018-11-24 23:17:13
  */
 
 const unirest = require("unirest");
@@ -175,18 +175,20 @@ const get_one_grade = (cookie, id) => {
     })
 }
 
+const login = require('./login')
+
 /**
  * Get total grade list.
  * @param {Object} user user information
  */
 const get_totalgrade = async(user) => {
     try {
-        let data_bb = {
-            "login_uid_unicode": new Buffer(user.username).toString('base64'),
-            "login_pwd_unicode": new Buffer(user.password).toString('base64')
-        };
-        let cookie_bb = await get_cookie_bb(data_bb);
-        let grade = await get_grade_bb(cookie_bb);
+        // let data_bb = {
+        //     "login_uid_unicode": new Buffer(user.username).toString('base64'),
+        //     "login_pwd_unicode": new Buffer(user.password).toString('base64')
+        // };
+        const cookie_bb = await login(user);
+        const grade = await get_grade_bb(cookie_bb);
         return grade;
     } catch (error) {
         if (error == 'USERWRONG') {
@@ -204,12 +206,12 @@ const get_totalgrade = async(user) => {
  */
 const get_certaingrade = async(user) => {
     try {
-        let data_bb = {
-            "login_uid_unicode": new Buffer(user.username).toString('base64'),
-            "login_pwd_unicode": new Buffer(user.password).toString('base64')
-        };
-        let cookis_bb = await get_cookie_bb(data_bb);
-        let onecourse_grade = await get_one_grade(cookis_bb, user.courseid);
+        // let data_bb = {
+        //     "login_uid_unicode": new Buffer(user.username).toString('base64'),
+        //     "login_pwd_unicode": new Buffer(user.password).toString('base64')
+        // };
+        const cookis_bb = await login(user);
+        const onecourse_grade = await get_one_grade(cookis_bb, user.courseid);
         return onecourse_grade;
     } catch (error) {
         if (error == 'USERWRONG') {

@@ -11,9 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "got": "^9.3.2",
     "grpc": "^1.12.4",
     "html-entities": "^1.2.1",
     "minimist": "^1.2.0",
+    "minio": "^7.0.1",
+    "tough-cookie": "^2.4.3",
     "unirest": "^0.5.1"
   }
 }
