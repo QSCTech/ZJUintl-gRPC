@@ -26,7 +26,7 @@ const getRealLoc = (cookie, url) => {
 
         req.end(function (res) {
             if (res.error) {
-                reject(res.error)
+                reject('REALLOCFETCHERROR')
                 return
             }
             if (!res.headers.location) {

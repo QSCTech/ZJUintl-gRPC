@@ -15,7 +15,8 @@ const upload = (fileName, stream) => {
     return new Promise((resolve, reject) => {
         minioClient.putObject('bbfiles', fileName, stream, (err, etag) => {
             if (err) {
-                reject(err)
+                console.log(err)
+                reject('OSSUPLOADERROR')
             } else {
                 resolve(etag)
             }

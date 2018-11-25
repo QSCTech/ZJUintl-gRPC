@@ -95,11 +95,11 @@ const request = (cookie) => {
                         firstName: notification.announcementFirstName || '',
                         lastName: notification.announcementLastName || '',
                     },
-                    body: notification.announcementBody,
+                    body: notification.announcementBody || '',
                     seen: notification.seen,
                     content: {
-                        extraData: content ? content.contentSpecificExtraData : '',
-                        fileUrl: content ? content.contentSpecificFileData : '',
+                        extraData: content ? content.contentSpecificExtraData || '' : '',
+                        fileUrl: content ? content.contentSpecificFileData || '' : '',
                     }
                 })
             })
@@ -138,7 +138,7 @@ const fetchData = async (user) => {
         }
 
         if (!exist(res)) {
-            throw 'Error'
+            throw 'FETCHERROR'
         }
         return res;
 

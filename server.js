@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-24 20:56:01
+ * @Last Modified time: 2018-11-25 12:12:24
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -47,21 +47,34 @@ const get_bbgrade = require('./spider/blackboard/get_bbgrade');
  * @param {*} call
  * @param {*} callback
  */
-const getBBGradeList = (call, callback) => {
+const GetGradeList = (call, callback) => {
     if (!call.request.username || !call.request.password) {
-        callback(null, {status: 'PARAMERROR'});
+        callback(null, {
+            status: {
+                code: 400,
+                info: 'PARAMERROR',
+            }
+        });
         return;
     };
     get_bbgrade
         .get_totalgrade({username: call.request.username, password: call.request.password})
         .then((result) => {
             callback(null, {
-                status: 'SUCCESS',
-                courses: result
+                status: {
+                    code: 200,
+                    info: 'SUCCESS'
+                },
+                gradelist: result
             });
         })
         .catch(err => {
-            callback(null, {status: err.status});
+            callback(null, {
+                status: {
+                    code: 500,
+                    info: err.status,
+                }
+            });
         })
 }
 
@@ -70,9 +83,14 @@ const getBBGradeList = (call, callback) => {
  * @param {*} call
  * @param {*} callback
  */
-const getBBCertainGrade = (call, callback) => {
-    if (!call.request.username || !call.request.password || !call.request.courseid) {
-        callback(null, {status: 'PARAMERROR'});
+const GetCertainGrade = (call, callback) => {
+    if (!call.request.username || !call.request.password || !call.request.courseId) {
+        callback(null, {
+            status: {
+                code: 400,
+                info: 'PARAMERROR',
+            }
+        });
         return;
     };
     get_bbgrade
@@ -80,13 +98,67 @@ const getBBCertainGrade = (call, callback) => {
         .then(result => {
             // console.log(result);
             callback(null, {
-                status: 'SUCCESS',
-                items: result
+                status: {
+                    code: 200,
+                    info: 'SUCCESS'
+                },
+                gradeitem: result
             });
         })
         .catch(err => {
-            callback(null, {status: err.status});
+            callback(null, {
+                status: {
+                    code: 500,
+                    info: err.status,
+                }
+            });
         })
+}
+
+const get_alert = require('./spider/blackboard/alerts')
+const GetAlertList = (call, callback) => {
+    get_alert({
+        username: call.request.username,
+        password: call.request.password,
+    }).then((res) => {
+        callback(null, {
+            status: {
+                code: 200,
+                info: 'SUCCESS'
+            },
+            alertlist: res
+        });
+    }).catch((error) => {
+        callback(null, {
+            status: {
+                code: 500,
+                info: error,
+            }
+        });
+    })
+}
+
+const file_saver = require('./spider/blackboard/filesaver')
+const GetFileEtag = (call, callback) => {
+    file_saver({
+        username: call.request.username,
+        password: call.request.password,
+    }, call.request.fileUrl).then((res) => {
+        callback(null, {
+            status: {
+                code: 200,
+                info: 'SUCCESS'
+            },
+            etag: res
+        });
+    }).catch((error) => {
+        callback(null, {
+            status: {
+                code: 500,
+                info: error,
+            }
+        });
+    })
 }
 
 /**
@@ -97,9 +169,13 @@ const getServer = () => {
     server.addProtoService(ZJUIntl.IntlService.service, {
         getCourse: getCourse,
         connect_test: connect_test,
-        getBBGradeList: getBBGradeList,
-        getBBCertainGrade: getBBCertainGrade
     });
+    server.addProtoService(ZJUIntl.BlackBoardService.service, {
+        GetGradeList: GetGradeList,
+        GetCertainGrade: GetCertainGrade,
+        GetAlertList: GetAlertList,
+        GetFileEtag: GetFileEtag
+    })
     return server;
 }
 
