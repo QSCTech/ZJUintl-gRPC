@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-25 13:42:55
+ * @Last Modified time: 2018-11-25 16:26:31
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -10,6 +10,7 @@ const grpc = require('grpc');
 
 let protoDescriptor = grpc.load(PROTO_PATH);
 let ZJUIntl = protoDescriptor.ZJUIntl;
+
 
 /**
  * connect_test resolver
@@ -117,6 +118,8 @@ const GetCertainGrade = (call, callback) => {
 
 const get_alert = require('./spider/blackboard/alerts')
 const GetAlertList = (call, callback) => {
+    // Since it may occur some problem inside ZJU net
+    // Try to request from server of Alicloud
     get_alert({
         username: call.request.username,
         password: call.request.password,
@@ -135,6 +138,25 @@ const GetAlertList = (call, callback) => {
                 info: error,
             }
         });
+    })
+}
+
+const clientBB = new ZJUIntl.BlackBoardService(`106.14.216.254:50053`, grpc.credentials.createInsecure());
+GetAlertListFromAlicloud = (call, callback) => {
+    clientBB.GetAlertList({
+        username: call.request.username,
+        password: call.request.password
+    }, (err, res) => {
+        if (err) {
+            callback(null, {
+                status: {
+                    code: 500,
+                    info: err,
+                }
+            });
+        } else {
+            callback(null, res)
+        }
     })
 }
 
@@ -174,7 +196,8 @@ const getServer = () => {
     server.addProtoService(ZJUIntl.BlackBoardService.service, {
         GetGradeList: GetGradeList,
         GetCertainGrade: GetCertainGrade,
-        GetAlertList: GetAlertList,
+        // GetAlertList: GetAlertList,
+        GetAlertList: GetAlertListFromAlicloud,
         GetFileEtag: GetFileEtag
     })
     return server;
