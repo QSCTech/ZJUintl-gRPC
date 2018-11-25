@@ -1,4 +1,7 @@
 # gRPC service for ZJUintl
+
+> 注意：由于getbbalert这个接口无法在内网中正确获取数据(原因不详)，因此暂时走的是位于`106.14.216.254:50053`上的rpc服务
+
 ## Overview
 As described above, this project is a `gRPC` service for ZJUintl Campus, it aims at providing safe and stable application interface for developers to get data they want which includes course information, exam details, exam scores etc.
 For a developer who want to use our service, you do not need to learn gRPC at all, what you need to do is to install our particular SDK which will be published later.
