@@ -1,0 +1,7 @@
+{
+    "apps": [{
+        "name": "ZJUintl-gRPC",
+        "script": "yarn",
+        "args": "start"
+    }]
+}
