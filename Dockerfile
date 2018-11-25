@@ -4,9 +4,13 @@ WORKDIR /usr/src/app
 
 COPY package.json *.lock ./
 
-RUN npm i cnpm -g --registry=https://registry.npm.taobao.org
+# RUN npm i cnpm -g --registry=https://registry.npm.taobao.org
 
-RUN cnpm i
+# RUN cnpm i
+
+RUN npm i yarn -g --registry=https://registry.npm.taobao.org
+
+RUN yarn
 
 COPY . .
 
