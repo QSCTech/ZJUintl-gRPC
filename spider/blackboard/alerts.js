@@ -79,6 +79,12 @@ const request = (cookie) => {
             };
             const body = JSON.parse(res.body);
             const data = body.sv_streamEntries;
+            const courseList = body.sv_extras.sx_courses
+            const courseMapper = {}
+            courseList.map((item) => {
+                courseMapper[item.id] = item.name
+            })
+            // console.log(courseMapper)
             const noticeList = []
             data.map((item) => {
                 const specific = item.itemSpecificData
@@ -86,11 +92,12 @@ const request = (cookie) => {
                 const content = specific.contentDetails
                 noticeList.push({
                     time: `${item.se_timestamp}`,
-                    title: specific.title,
+                    title: specific.title || '',
                     type: item.extraAttribs.event_type,
+                    courseName: courseMapper[item.se_courseId] || '',
                     courseId: item.se_courseId,
-                    sourceId: notification.sourceId,
-                    itemUrl: item.se_itemUri,
+                    sourceId: notification.sourceId || '',
+                    itemUrl: item.se_itemUri || '',
                     author: {
                         firstName: notification.announcementFirstName || '',
                         lastName: notification.announcementLastName || '',
