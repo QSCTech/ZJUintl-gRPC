@@ -45,8 +45,8 @@ const saveToMinio = async (cookie, url, name) => {
         },
         stream: true
     })
-    const etag = await upload(name, stream)
-    return etag
+    const res = await upload(name, stream)
+    return res
 }
 
 const login = require('./login')
@@ -58,8 +58,8 @@ const main = async (user, target) => {
         const cookie = await login(user)
 
         const realLoc = await getRealLoc(cookie, target)
-        const etag = await saveToMinio(cookie, realLoc, `${user.username}/${realLoc.replace('https://c.zju.edu.cn/bbcswebdav/', '')}`)
-        return etag
+        const res = await saveToMinio(cookie, realLoc, `${user.username}/${realLoc.replace('https://c.zju.edu.cn/bbcswebdav/', '')}`)
+        return res
     } catch (error) {
         return Promise.reject(error)
     }

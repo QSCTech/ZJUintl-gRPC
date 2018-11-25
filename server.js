@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-25 12:12:24
+ * @Last Modified time: 2018-11-25 13:42:55
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -149,7 +149,8 @@ const GetFileEtag = (call, callback) => {
                 code: 200,
                 info: 'SUCCESS'
             },
-            etag: res
+            etag: res.etag,
+            filePath: res.filePath
         });
     }).catch((error) => {
         callback(null, {

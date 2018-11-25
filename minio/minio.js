@@ -18,7 +18,7 @@ const upload = (fileName, stream) => {
                 console.log(err)
                 reject('OSSUPLOADERROR')
             } else {
-                resolve(etag)
+                resolve({filePath: fileName, etag})
             }
         })
     })
