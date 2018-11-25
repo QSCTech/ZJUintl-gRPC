@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-25 12:20:22
+ * @Last Modified time: 2018-11-25 15:04:53
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -23,7 +23,7 @@ const user = require('./test_user').test_user;
 // meta.add('Host', 'zjuintl.rpc.zjuqsc.com')
 
 // Code for connect test
-// client.connect_test({ name: 'lapehts' }, (err, response) => {
+// clientIntl.connect_test({ name: 'lapehts' }, (err, response) => {
 //     if (err) {
 //         console.log(err);
 //     } else {
@@ -40,17 +40,17 @@ const user = require('./test_user').test_user;
 //     }
 // })
 
-// clientBB.GetAlertList({
-//     username: user.username,
-//     password: user.password
-// }, (err, res) => {
-//     if (err) {
-//         console.log(err)
-//     } else {
-//         console.log(res)
-//     }
+clientBB.GetAlertList({
+    username: user.username,
+    password: user.password
+}, (err, res) => {
+    if (err) {
+        console.log(err)
+    } else {
+        console.log(res)
+    }
 
-// })
+})
 
 // client.getBBGradeList({ username: user.username, password: user.password }, (err, response) => {
 //     if (err) {

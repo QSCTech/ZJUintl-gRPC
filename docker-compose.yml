@@ -26,7 +26,8 @@ services:
         - "traefik.docker.network=traefik_net"
         - "traefik.backend=ZJUintl-gRPC"
         #- "traefik.frontend.rule=Host:intl.rpc.zjuqsc.com"
-        - "traefik.frontend.rule=PathPrefix:/ZJUIntl.IntlService/,/ZJUIntl.BlackBoardService/"
+        - "traefik.frontend.rule=PathPrefix:/ZJUIntl.IntlService/"
+        - "traefik.frontend.rule=PathPrefix:/ZJUIntl.BlackBoardService/"
 networks:
   traefik_net:
     external: true
