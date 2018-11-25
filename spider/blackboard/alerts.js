@@ -85,7 +85,7 @@ const request = (cookie) => {
                 const notification = specific.notificationDetails
                 const content = specific.contentDetails
                 noticeList.push({
-                    time: item.se_timestamp,
+                    time: `${item.se_timestamp}`,
                     title: specific.title,
                     type: item.extraAttribs.event_type,
                     courseId: item.se_courseId,
