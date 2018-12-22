@@ -16,7 +16,7 @@ services:
     networks:
       - traefik_net
     deploy:
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
       labels:
