@@ -3,7 +3,7 @@ const parse_time = (time) => {
     let type = time.slice(-2);
     let tmp = t.split(':');
     let hour = ~~tmp[0], min = ~~tmp[1];
-    if (type == 'PM') {
+    if (type == 'PM' && hour !== 12) {
         hour += 12;
     }
     return {hour, min}
