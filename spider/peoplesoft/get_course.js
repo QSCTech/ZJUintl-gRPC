@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-10-28 17:27:01
+ * @Last Modified time: 2018-12-22 17:19:34
  */
 
 const unirest = require("unirest");
@@ -12,36 +12,7 @@ const cheerio = require("cheerio");
  * Login and get the cookie
  * @param {object} data Data for user
  */
-const get_cookie_pp = (data) => {
-    return new Promise((resolve, reject) => {
-        const req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
-        req.headers({
-            "Postman-Token": "b5f9d7dd-ef66-9a31-9199-9350cbf2c05a",
-            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-            "Accept-Encoding": "gzip, deflate",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;" +
-                    "q=0.8",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Upgrade-Insecure-Requests": "1",
-            "Origin": "http://scrsprd.zju.edu.cn",
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "Host": "scrsprd.zju.edu.cn"
-        });
-        req.form(data);
-        req.end(function (res) {
-            if (res.error) 
-                reject(res.error);
-            
-            // console.log(res.body);
-            let cookie = res.headers["set-cookie"];
-            // console.log(cookie);
-            resolve(cookie);
-        });
-    });
-}
+const login = require("./login")
 
 /**
  * Get the weekly schedule table
@@ -414,16 +385,7 @@ const prase_info = (courses) => {
 }
 
 //'2:30PM'
-const prase_time = (time) => {
-    let t = time.slice(0, -2);
-    let type = time.slice(-2);
-    let tmp = t.split(':');
-    let hour = ~~tmp[0], min = ~~tmp[1];
-    if (type == 'PM') {
-        hour += 12;
-    }
-    return {hour, min}
-}
+const { parse_time } = require('./utils')
 
 const generate_contine_number = (start, end) => {
     const tmp = [];
@@ -441,8 +403,8 @@ const easy_prase = (course) => {
 
     course.forEach((item) => {
         let time = item.time.split(' - ');
-        let startTime = prase_time(time[0]),
-            endTime = prase_time(time[1]);
+        let startTime = parse_time(time[0]),
+            endTime = parse_time(time[1]);
         let duration = 0
         if (endTime.hour === startTime.hour) {
             duration = endTime.min - startTime.min
@@ -493,7 +455,7 @@ const process_course = (courses) => {
             const item = course[j];
             // console.log(item);
             let time = item.time.split(' - ');
-            let startTime = prase_time(time[0]), endTime = prase_time(time[1]);
+            let startTime = parse_time(time[0]), endTime = parse_time(time[1]);
             // console.log(time);
             // console.log(startTime, endTime);
             let cur_time = {
@@ -523,7 +485,7 @@ const process_course = (courses) => {
 
     // for (let i in courses) {
     //     let time = courses[i].time.split(' - ');
-    //     let startTime = prase_time(time[0]), endTime = prase_time(time[1]);
+    //     let startTime = parse_time(time[0]), endTime = parse_time(time[1]);
     //     new_course.push({
     //         id: courses[i].id,
     //         name: courses[i].name,
@@ -542,22 +504,15 @@ const process_course = (courses) => {
 
 const main = async(user) => {
     try {
-        let data_pp = {
-            "userid": user.username,
-            "pwd": user.password,
-            "ptlangsel": "ENG",
-            "Submit": "Login",
-            "timezoneOffset": "0"
-        }
-        let cookie = await get_cookie_pp(data_pp);
+        const cookie = await login(user);
 
-        let course = await get_schedule_tabel(cookie);
+        const course = await get_schedule_tabel(cookie);
 
-        let info = prase_info(course);
+        const info = prase_info(course);
         await step_1(cookie);
-        let url = await step_2(cookie);
-        let {ICElementNum, ICStateNum, ICSID} = await step_3(cookie, url);
-        let courses = await step_4(cookie, ICElementNum, ICStateNum, ICSID, info);
+        const url = await step_2(cookie);
+        const {ICElementNum, ICStateNum, ICSID} = await step_3(cookie, url);
+        const courses = await step_4(cookie, ICElementNum, ICStateNum, ICSID, info);
         if (!courses.length) {
             throw 'FETCHERROR';
         }

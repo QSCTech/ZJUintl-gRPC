@@ -200,6 +200,11 @@ chalk@^1.1.1:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
+cheerio-tableparser@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cheerio-tableparser/-/cheerio-tableparser-1.0.1.tgz#e55ad2dcb5361b8c323a6cbb8c0cd46e3cbdf1cd"
+  integrity sha1-5VrS3LU2G4wyOmy7jAzUbjy98c0=
+
 cheerio@^1.0.0-rc.2:
   version "1.0.0-rc.2"
   resolved "https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.2.tgz#4b9f53a81b27e4d5dac31c0ffd0cfa03cc6830db"

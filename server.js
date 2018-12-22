@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-25 23:26:07
+ * @Last Modified time: 2018-12-22 17:50:03
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -26,7 +26,7 @@ const connect_test = (call, callback) => {
  * @param {*} call
  * @param {*} callback
  */
-const get_course = require('./spider/get_course');
+const get_course = require('./spider/peoplesoft/get_course');
 const getCourse = (call, callback) => {
     if (!call.request.username || !call.request.password) {
         callback(null, {status: 'PARAMERROR'});
@@ -41,6 +41,41 @@ const getCourse = (call, callback) => {
         callback(null, {status: err.status});
     })
 };
+
+const get_exam = require('./spider/peoplesoft/exam')
+const GetExamInfo = async(call, callback) => {
+    if (!call.request.username || !call.request.password) {
+        callback(null, {
+            status: {
+                code: 400,
+                info: 'PARAMERROR',
+            }
+        });
+        return;
+    };
+    try {
+        callback(null, {
+            status: {
+                code: 200,
+                info: 'SUCCESS',
+            },
+            examinfo: await get_exam({
+                username: call.request.username,
+                password: call.request.password,
+            })
+        });
+        return;
+    } catch (error) {
+        callback(null, {
+            status: {
+                code: 500,
+                info: 'FETCHERROR',
+            }
+        });
+    }
+}
+
+
 
 const get_bbgrade = require('./spider/blackboard/get_bbgrade');
 /**
@@ -192,6 +227,7 @@ const getServer = () => {
     server.addProtoService(ZJUIntl.IntlService.service, {
         getCourse: getCourse,
         connect_test: connect_test,
+        GetExamInfo: GetExamInfo
     });
     server.addProtoService(ZJUIntl.BlackBoardService.service, {
         GetGradeList: GetGradeList,

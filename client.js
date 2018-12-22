@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-11-25 23:26:26
+ * @Last Modified time: 2018-12-22 17:52:22
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -22,8 +22,20 @@ const argv = require('minimist')(process.argv.slice(2));
 
 // let clientBB = new ZJUIntl.BlackBoardService(`0.0.0.0:50053`
 //     , grpc.credentials.createInsecure());
+let clientIntl = new ZJUIntl.IntlService(`0.0.0.0:50053`
+    , grpc.credentials.createInsecure());
 
 const user = require('./test_user').test_user;
+
+// clientIntl.GetExamInfo({
+//     username: user.username,
+//     password: user.password
+// }, (err, response) => {
+//         if (err) {
+//             console.log(err)
+//         }
+//     console.log(response)
+// })
 
 // const meta = new grpc.Metadata()
 // meta.add('Host', 'zjuintl.rpc.zjuqsc.com')
@@ -46,17 +58,17 @@ const user = require('./test_user').test_user;
 //     }
 // })
 
-clientBB.GetAlertList({
-    username: user.username,
-    password: user.password
-}, (err, res) => {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log(res)
-    }
+// clientBB.GetAlertList({
+//     username: user.username,
+//     password: user.password
+// }, (err, res) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log(res)
+//     }
 
-})
+// })
 
 
 // clientBB.GetGradeList({
