@@ -12,14 +12,14 @@ variables:
 before_script:
   - docker login -u docker -p $DOCKER_PASSWORD harbor.zjuqsc.com
 
-build-image:
-  stage: build
-  tags:
-    - docker
-  script:
-    - docker pull $IMAGE_TAG || true
-    - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+# build-image:
+#   stage: build
+#   tags:
+#     - docker
+#   script:
+#     - docker pull $IMAGE_TAG || true
+#     - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
+#     - docker push $IMAGE_TAG
 
 deploy-to-swarm:
   stage: deploy
