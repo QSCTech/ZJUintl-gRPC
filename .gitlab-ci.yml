@@ -25,7 +25,7 @@ deploy-to-swarm:
   stage: deploy
   tags:
     - deploy
-    - swarm
+    # - swarm
   script:
     - docker pull $IMAGE_TAG || true
     - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG-$CI_COMMIT_SHA .
