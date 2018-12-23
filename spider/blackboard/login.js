@@ -37,7 +37,6 @@ const login = ({ username, password }) => {
                 reject('USERWRONG');
             } else {
                 const cookie = res.headers["set-cookie"];
-                // console.log(cookie);
                 resolve(cookie);
             }
         });
