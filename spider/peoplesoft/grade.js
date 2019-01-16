@@ -2,35 +2,6 @@ const unirest = require("unirest");
 const superagent = require("superagent");
 const cheerio = require("cheerio");
 
-const get_cookie_pp = (data) => {
-    return new Promise((resolve, reject) => {
-        const req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
-        req.headers({
-            "Postman-Token": "b5f9d7dd-ef66-9a31-9199-9350cbf2c05a",
-            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-            "Accept-Encoding": "gzip, deflate",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;" +
-                    "q=0.8",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
-                    "Gecko) Chrome/63.0.3239.132 Safari/537.36",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Upgrade-Insecure-Requests": "1",
-            "Origin": "http://scrsprd.zju.edu.cn",
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "Host": "scrsprd.zju.edu.cn"
-        });
-        req.form(data);
-        req.end(function (res) {
-            if (res.error) 
-                reject(res.error);
-            let cookie = res.headers["set-cookie"];
-            // console.log(cookie);
-            resolve(cookie);
-        });
-    })
-}
-
 const step_1 = (cookie) => {
     return new Promise((resolve, reject) => {
         const req = unirest("GET", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_ACAD_REC_FL.SS" +
@@ -283,8 +254,7 @@ const get_term = async({username, password}) => {
         const cookie = await login({username, password});
         const {ICStateNum, ics} = await step_1(cookie);
         const {newNum, semester} = await step_2(cookie, ICStateNum, ics);
-
-        console.log(semester);
+        return semester;
     } catch (error) {
         return Promise.reject(error);
     }

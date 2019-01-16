@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:13:41
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-12-22 17:50:03
+ * @Last Modified time: 2019-01-16 22:28:59
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -41,6 +41,77 @@ const getCourse = (call, callback) => {
         callback(null, {status: err.status});
     })
 };
+
+const GPA_service = require('./spider/peoplesoft/grade');
+
+const GetGPATermInfo = async (call, callback) => {
+    if (!call.request.username || !call.request.password) {
+        callback(null, {
+            status: {
+                code: 400,
+                info: 'PARAMERROR',
+            }
+        });
+        return;
+    };
+    try {
+        callback(null, {
+            status: {
+                code: 200,
+                info: 'SUCCESS',
+            },
+            terminfo: await GPA_service.get_term({
+                username: call.request.username,
+                password: call.request.password,
+            })
+        });
+        return;
+    } catch (error) {
+        console.log(error);
+        callback(null, {
+            status: {
+                code: 500,
+                info: 'FETCHERROR',
+            }
+        });
+    }
+}
+const GetGPAInfo = async (call, callback) => {
+    if (!call.request.username || !call.request.password || !call.request.term) {
+        callback(null, {
+            status: {
+                code: 400,
+                info: 'PARAMERROR',
+            }
+        });
+        return;
+    };
+    try {
+        const GPA = await GPA_service.get_grade({
+            username: call.request.username,
+            password: call.request.password,
+            term: call.request.term,
+        })
+        callback(null, {
+            status: {
+                code: 200,
+                info: 'SUCCESS',
+            },
+            termgpa: GPA.termgpa,
+            cumulativegpa: GPA.cumulativegpa,
+            gpainfo: GPA.gpainfo,
+        });
+        return;
+    } catch (error) {
+        console.log(error);
+        callback(null, {
+            status: {
+                code: 500,
+                info: 'FETCHERROR',
+            }
+        });
+    }
+}
 
 const get_exam = require('./spider/peoplesoft/exam')
 const GetExamInfo = async(call, callback) => {
@@ -227,7 +298,9 @@ const getServer = () => {
     server.addProtoService(ZJUIntl.IntlService.service, {
         getCourse: getCourse,
         connect_test: connect_test,
-        GetExamInfo: GetExamInfo
+        GetExamInfo: GetExamInfo,
+        GetGPAInfo: GetGPAInfo,
+        GetGPATermInfo: GetGPATermInfo,
     });
     server.addProtoService(ZJUIntl.BlackBoardService.service, {
         GetGradeList: GetGradeList,

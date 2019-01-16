@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-12-22 18:42:26
+ * @Last Modified time: 2019-01-16 22:29:26
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -26,6 +26,30 @@ const argv = require('minimist')(process.argv.slice(2));
 //     , grpc.credentials.createInsecure());
 
 const user = require('./test_user').test_user;
+
+
+
+// clientIntl.GetGPATermInfo({
+//     username: user.username,
+//     password: user.password
+// }, (err, response) => {
+//         if (err) {
+//             console.log(err)
+//         }
+//     console.log(response)
+// })
+
+// clientIntl.GetGPAInfo({
+//     username: user.username,
+//     password: user.password,
+//     term: 'TERM$2'
+// }, (err, response) => {
+//         if (err) {
+//             console.log(err)
+//         }
+//     console.log(response)
+// })
+
 
 // clientIntl.GetExamInfo({
 //     username: user.username,
