@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-25 00:08:10
  * @Last Modified by: Laphets
- * @Last Modified time: 2018-12-22 17:19:34
+ * @Last Modified time: 2019-01-16 21:26:54
  */
 
 const unirest = require("unirest");
@@ -343,7 +343,8 @@ const step_4 = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
                                     // console.log(i2, $(elem2).text());
                                 });
                             flag = `${flag}${starttime}`.replace(/[ ]/g, "");
-                            //console.log(flag);
+                            
+                            console.log(flag);
                             const ojbk = info[flag];
                             if (ojbk) {
                                 //Every-Two-Week
@@ -382,6 +383,111 @@ const prase_info = (courses) => {
     }
     return info;
     // console.log(info);
+}
+
+/**
+ * TOD
+ * @param {*} cookie 
+ * @param {*} ICElementNum 
+ * @param {*} ICStateNum 
+ * @param {*} ICSID 
+ * @param {*} info 
+ */
+const get_course_another_way = (cookie, ICElementNum, ICStateNum, ICSID, info) => {
+    return new Promise((resolve, reject) => {
+        const req = unirest("POST", "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_COMPONE" +
+            "NT_FL.GBL");
+
+        req.headers({
+            "Postman-Token": "6ff85b8e-49fb-16dc-1842-5c5d0a6d2963",
+            "Cache-Control": "no-cache",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like " +
+                "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+            "Referer": "http://scrsprd.zju.edu.cn/psc/CSPRD_1/EMPLOYEE/HRMS/c/SSR_STUDENT_FL.SSR_MD_SP_F" +
+                "L.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START" +
+                "_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV",
+            "Origin": "http://scrsprd.zju.edu.cn",
+            "Host": "scrsprd.zju.edu.cn",
+            "Cookie": cookie,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Connection": "keep-alive",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept": "*/*"
+        });
+
+        req.form({
+            "ICAJAX": "1",
+            "ICNAVTYPEDROPDOWN": "0",
+            "ICType": "Panel",
+            "ICElementNum": ICElementNum,
+            "ICStateNum": ICStateNum,
+            "ICAction": "SSR_ENTRMCUR_VW_TERM_DESCR30$1",
+            "ICXPos": "0",
+            "ICYPos": "0",
+            "ResponsetoDiffFrame": "-1",
+            "TargetFrameName": "None",
+            "FacetPath": "None",
+            "ICFocus": "",
+            "ICSaveWarningFilter": "0",
+            "ICChanged": "-1",
+            "ICAutoSave": "0",
+            "ICResubmit": "0",
+            "ICSID": ICSID,
+            "ICActionPrompt": "false",
+            "ICTypeAheadID": "",
+            "ICBcDomData": "C~UnknownValue~EMPLOYEE~HRMS~NUI_FRAMEWORK.PT_LANDINGPAGE.GBL~PT_LANDINGPAGE~Stu" +
+                "dent Center~UnknownValue~UnknownValue~http://scrsprd.zju.edu.cn/psc/CSPRD/EMPLOY" +
+                "EE/HRMS/c/NUI_FRAMEWORK.PT_LANDINGPAGE.GBL~UnknownValue",
+            "ICDNDSrc": "",
+            "ICPanelHelpUrl": "",
+            "ICPanelName": "",
+            "ICPanelControlStyle": "pst_side2-disabled pst_side1-fixed pst_side2-hidden pst_panel-mode",
+            "ICFind": "",
+            "ICAddCount": "",
+            "ICAPPCLSDATA": "",
+            "win1hdrdivPT_SYSACT_HELP": "psc_hidden",
+            "DERIVED_SSR_FL_SSR_VW_CLSCHD_OPT$81$": "D"
+        });
+
+        req.end(function (res) {
+            if (res.error)
+                reject(res.error);
+            try {
+                console.log(info)
+                const $ = cheerio.load(res.body);
+                // const course = []
+
+                $('.ps_box-scrollarea-row').each((index, element) => {
+                    // Find the name
+                    let label = '', name = '';
+                    $(element).find('.ps_box-group .psa_display-block .ps_box-value').each((index, element) => {
+                        switch (index) {
+                            case 0: {
+                                
+                                label = $(element).text();
+                                break;
+                            }
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                name = $(element).text();
+                                break;
+                            }
+                        }
+                    })
+                    const flag_pre = `${label}${starttime}`.replace(/[ ]/g, "");
+                    console.log(label)
+                })
+                // console.log(res.body);
+                // resolve(courses);
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+    })
 }
 
 //'2:30PM'
@@ -531,8 +637,8 @@ module.exports = main;
 /**
  * Just for test
  */
-// main({username: '3170111705', password: ''}).then(res => {
-//     console.log(res);
-// }).catch(err => {
-//     console.log(err);
-// })
+main({username: '3170111705', password: ''}).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+})

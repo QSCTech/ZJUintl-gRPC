@@ -17,6 +17,9 @@ Also, you need to create a config file yourself according to the sample given by
 mv config_sample.js config.js
 vim config.js
 ```
+## Bug Report
+The same course at same time in one day (even has distinct date) should has same room, instructor name and end time.
+
 ## Endponit Lists
 1. **Connect_test** - Test whether you can connect to our sevice.
 ```js
