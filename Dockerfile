@@ -10,7 +10,7 @@ COPY package.json *.lock ./
 
 RUN npm i yarn -g --registry=https://registry.npm.taobao.org
 
-RUN yarn
+RUN yarn --registry=https://registry.npm.taobao.org
 
 COPY . .
 
