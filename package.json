@@ -17,6 +17,7 @@
     "html-entities": "^1.2.1",
     "minimist": "^1.2.0",
     "minio": "^7.0.1",
+    "superagent": "^4.1.0",
     "tough-cookie": "^2.4.3",
     "unirest": "^0.5.1"
   }
