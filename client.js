@@ -2,7 +2,7 @@
  * @Author: Laphets
  * @Date: 2018-04-22 00:42:03
  * @Last Modified by: Laphets
- * @Last Modified time: 2019-01-16 22:29:26
+ * @Last Modified time: 2019-01-16 22:32:19
  */
 
 const PROTO_PATH = __dirname + '/protobuf/ZJUIntl/ZJUIntl.proto';
@@ -11,10 +11,10 @@ const grpc = require('grpc');
 let protoDescriptor = grpc.load(PROTO_PATH);
 let ZJUIntl = protoDescriptor.ZJUIntl;
 const argv = require('minimist')(process.argv.slice(2));
-// let clientIntl = new ZJUIntl.IntlService(`10.202.68.181:8890`
-//     , grpc.credentials.createInsecure());
-// let clientBB = new ZJUIntl.BlackBoardService(`10.202.68.181:8890`
-//     , grpc.credentials.createInsecure());
+let clientIntl = new ZJUIntl.IntlService(`10.202.68.181:8890`
+    , grpc.credentials.createInsecure());
+let clientBB = new ZJUIntl.BlackBoardService(`10.202.68.181:8890`
+    , grpc.credentials.createInsecure());
 // let clientIntl = new ZJUIntl.IntlService(`106.14.216.254:50053`
 //     , grpc.credentials.createInsecure());
 // let clientBB = new ZJUIntl.BlackBoardService(`106.14.216.254:50053`
@@ -29,26 +29,26 @@ const user = require('./test_user').test_user;
 
 
 
-// clientIntl.GetGPATermInfo({
-//     username: user.username,
-//     password: user.password
-// }, (err, response) => {
-//         if (err) {
-//             console.log(err)
-//         }
-//     console.log(response)
-// })
+clientIntl.GetGPATermInfo({
+    username: user.username,
+    password: user.password
+}, (err, response) => {
+        if (err) {
+            console.log(err)
+        }
+    console.log(response)
+})
 
-// clientIntl.GetGPAInfo({
-//     username: user.username,
-//     password: user.password,
-//     term: 'TERM$2'
-// }, (err, response) => {
-//         if (err) {
-//             console.log(err)
-//         }
-//     console.log(response)
-// })
+clientIntl.GetGPAInfo({
+    username: user.username,
+    password: user.password,
+    term: 'TERM$2'
+}, (err, response) => {
+        if (err) {
+            console.log(err)
+        }
+    console.log(response)
+})
 
 
 // clientIntl.GetExamInfo({

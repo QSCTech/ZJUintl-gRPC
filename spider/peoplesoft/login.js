@@ -6,7 +6,7 @@ const unirest = require("unirest");
  */
 const login = (user, lang = 'ENG') => {
     return new Promise((resolve, reject) => {
-        const req = unirest("POST", "http://scrsprd.zju.edu.cn/CSPRD/ZjuSSOAuth001.jsp");
+        const req = unirest("POST", "http://scrsprd.zju.edu.cn/psp/CSPRD/?&cmd=login&languageCd=ENG");
         req.headers({
             "Postman-Token": "b5f9d7dd-ef66-9a31-9199-9350cbf2c05a",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
@@ -25,14 +25,13 @@ const login = (user, lang = 'ENG') => {
         req.form({
             "userid": user.username,
             "pwd": user.password,
-            "ptlangsel": lang,
+            "ptlangcd": lang,
             "Submit": "Login",
             "timezoneOffset": "0"
         });
         req.end(function (res) {
             if (res.error)
                 reject(res.error);
-
             // console.log(res.body);
             let cookie = res.headers["set-cookie"];
             // console.log(cookie);
